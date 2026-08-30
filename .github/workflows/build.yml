@@ -36,7 +36,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v1
         with:
-          files: build/libs/*.jar
+          files: target/*.jar
           tag_name: v${{ github.run_number }}
           generate_release_notes: true
         env:
