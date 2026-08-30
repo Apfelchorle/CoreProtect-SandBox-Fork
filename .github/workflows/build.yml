@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
       - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
@@ -22,15 +22,11 @@ jobs:
       - name: Build
         run: mvn -B verify
 
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-        continue-on-error: true
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: plugin-jar
-          path: build/libs/*.jar
+          path: target/*.jar
 
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -40,4 +36,4 @@ jobs:
           tag_name: v${{ github.run_number }}
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
